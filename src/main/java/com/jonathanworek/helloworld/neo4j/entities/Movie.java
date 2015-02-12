@@ -16,19 +16,23 @@ public class Movie {
     @GraphId
     Long id;
 
-    @Indexed(indexType = FULLTEXT, indexName = "search")
-    String title;
+//    @Indexed(indexType = FULLTEXT, indexName = "search")
+//    String title;
+//
+//    Person director;
+//
+//    @RelatedTo(type = "ACTS_IN", direction = INCOMING)
+//    Set<Person> actors;
+//
+//    @RelatedToVia(type = "RATED")
+//    Iterable<Rating> ratings;
+//
+//    @Query("START movie-node({self})" +
+//            "MATCH movie-->genre<--similar" +
+//            "RETURN similar")
+//    Iterable<Movie> similarMovies;
 
-    Person director;
+    public Movie() {
 
-    @RelatedTo(type = "ACTS_IN", direction = INCOMING)
-    Set<Person> actors;
-
-    @RelatedToVia(type = "RATED")
-    Iterable<Rating> ratings;
-
-    @Query("START movie-node({self})" +
-            "MATCH movie-->genre<--similar" +
-            "RETURN similar")
-    Iterable<Movie> similarMovies;
+    }
 }
