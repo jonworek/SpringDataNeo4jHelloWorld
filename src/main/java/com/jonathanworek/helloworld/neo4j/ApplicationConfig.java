@@ -18,10 +18,17 @@ import org.springframework.data.neo4j.rest.SpringRestGraphDatabase;
 @Configuration
 @ComponentScan
 @EnableAutoConfiguration
-@EnableNeo4jRepositories
+@EnableNeo4jRepositories({
+        "com.jonathanworek.helloworld.neo4j.entities",
+        "com.jonathanworek.helloworld.neo4j.dao"
+})
 public class ApplicationConfig extends Neo4jConfiguration {
     @Autowired
     GraphDatabase graphDatabase;
+
+    public ApplicationConfig() {
+        setBasePackage("com.jonathanworek.helloworld.neo4j");
+    }
 
     @Bean
     GraphDatabaseService graphDatabaseService() {

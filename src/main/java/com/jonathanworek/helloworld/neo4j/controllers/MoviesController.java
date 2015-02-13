@@ -4,9 +4,9 @@ import com.jonathanworek.helloworld.neo4j.dao.MovieRepository;
 import com.jonathanworek.helloworld.neo4j.entities.Movie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 /**
  * Created by jworek on 2/12/15.
@@ -16,8 +16,16 @@ public class MoviesController {
     @Autowired
     MovieRepository movieRepo;
 
-    @RequestMapping("/movies")
+    @RequestMapping(name = "/movies", method = GET)
     public Iterable<Movie> allMovies() {
         return movieRepo.findAll();
+    }
+
+    @RequestMapping(name = "/movies", method = POST)
+    public Movie createMovie(@RequestParam String title) {
+        Movie m = new Movie(title);
+
+        Movie createdMovie = movieRepo.save(m);
+        return createdMovie;
     }
 }
