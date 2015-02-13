@@ -4,6 +4,7 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,9 @@ import org.springframework.data.neo4j.config.EnableNeo4jRepositories;
 import org.springframework.data.neo4j.config.Neo4jConfiguration;
 import org.springframework.data.neo4j.core.GraphDatabase;
 import org.springframework.data.neo4j.rest.SpringRestGraphDatabase;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import static org.springframework.context.annotation.AdviceMode.PROXY;
 
 /**
  * Created by jworek on 2/12/15.
@@ -18,6 +22,7 @@ import org.springframework.data.neo4j.rest.SpringRestGraphDatabase;
 @Configuration
 @ComponentScan
 @EnableAutoConfiguration
+@EnableTransactionManagement(mode = PROXY)
 @EnableNeo4jRepositories({
         "com.jonathanworek.helloworld.neo4j.entities",
         "com.jonathanworek.helloworld.neo4j.dao"
