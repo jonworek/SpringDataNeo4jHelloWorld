@@ -3,6 +3,8 @@ package com.jonathanworek.helloworld.neo4j.controllers;
 import com.jonathanworek.helloworld.neo4j.dao.MovieRepository;
 import com.jonathanworek.helloworld.neo4j.entities.Movie;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.neo4j.conversion.Result;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,8 +23,11 @@ public class MoviesController {
     MovieRepository movieRepo;
 
     @RequestMapping(name = "/", method = GET)
-    public Iterable<Movie> allMovies() {
-        Iterable<Movie> result = movieRepo.findAll();
+    public Iterable<Movie> allMovies(
+            @RequestParam(value = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+
+        Iterable<Movie> result = movieRepo.findAll(new PageRequest(page, pageSize));
         return result;
     }
 
