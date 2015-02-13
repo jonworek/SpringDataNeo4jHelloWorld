@@ -1,7 +1,9 @@
 package com.jonathanworek.helloworld.neo4j.controllers;
 
 import com.jonathanworek.helloworld.neo4j.dao.MovieRepository;
+import com.jonathanworek.helloworld.neo4j.dao.PersonRepository;
 import com.jonathanworek.helloworld.neo4j.entities.Movie;
+import com.jonathanworek.helloworld.neo4j.entities.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,12 +19,15 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
  */
 @RestController
 @Transactional
-@RequestMapping("/movies")
+//@RequestMapping("/movies")
 public class MoviesController {
     @Autowired
     MovieRepository movieRepo;
 
-    @RequestMapping(name = "/", method = GET)
+    @Autowired
+    PersonRepository personRepo;
+
+    @RequestMapping(value = "/movies", method = GET)
     public Iterable<Movie> allMovies(
             @RequestParam(value = "page", required = false, defaultValue = "0") int page,
             @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
@@ -31,17 +36,38 @@ public class MoviesController {
         return result;
     }
 
-    @RequestMapping("/{id}")
-    public Movie findMovieById(@PathVariable Long id) {
-        Movie result = movieRepo.findOne(id);
-        return result;
-    }
-
-    @RequestMapping(name = "/", method = POST)
+    @RequestMapping(value = "/movies", method = POST)
     public Movie createMovie(@RequestParam String title) {
         Movie m = new Movie(title);
 
         Movie createdMovie = movieRepo.save(m);
         return createdMovie;
+    }
+
+    @RequestMapping(value = "/movies/{id}")
+    public Movie findMovieById(@PathVariable Long id) {
+        Movie result = movieRepo.findOne(id);
+        return result;
+    }
+
+    @RequestMapping(value = "/movies/{id}/actors")
+    public Iterable<Person> findActorsForMovieById(@PathVariable Long id) {
+        Movie result = movieRepo.findOne(id);
+        return result.getActors();
+    }
+
+    @RequestMapping(value = "/movies/{id}/actors", method = POST)
+    public Person addActorToMovie(@PathVariable Long id,
+                                  @RequestParam String actorName,
+                                  @RequestParam String roleName) {
+        Movie movie = movieRepo.findOne(id);
+        Person actor = personRepo.findBySchemaPropertyValue("name", actorName);
+        if (actor == null) {
+            actor = personRepo.save(new Person(actorName));
+        }
+
+        //todo: make this method work so we save the relationship
+        actor.actedIn(movie, roleName);
+        return personRepo.save(actor);
     }
 }

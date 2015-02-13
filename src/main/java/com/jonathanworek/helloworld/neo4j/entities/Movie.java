@@ -18,8 +18,8 @@ public class Movie extends AbstractEntity {
 //
 //    Person director;
 //
-//    @RelatedTo(type = "ACTS_IN", direction = INCOMING)
-//    Set<Person> actors;
+    @RelatedTo(type = "ACTS_IN", direction = INCOMING)
+    Set<Person> actors;
 //
 //    @RelatedToVia(type = "RATED")
 //    Iterable<Rating> ratings;
@@ -41,4 +41,7 @@ public class Movie extends AbstractEntity {
         return title;
     }
 
+    public Iterable<Person> getActors() {
+        return actors;
+    }
 }
