@@ -71,12 +71,9 @@ public class MoviesController {
             actor = personRepo.save(new Person(actorName));
         }
 
-        //todo: make this method work so we save the relationship
         Role r = actor.actedIn(movie, roleName);
 
         roleRepo.save(r);
-        //personRepo.save(actor);
-        //movieRepo.save(movie);
 
         return r;
     }
