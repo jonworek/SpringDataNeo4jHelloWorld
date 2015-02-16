@@ -1,6 +1,7 @@
 package com.jonathanworek.helloworld.neo4j.entities;
 
 import org.springframework.data.neo4j.annotation.EndNode;
+import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.RelationshipEntity;
 import org.springframework.data.neo4j.annotation.StartNode;
 
@@ -11,6 +12,7 @@ import org.springframework.data.neo4j.annotation.StartNode;
 public class Role extends AbstractEntity {
     @StartNode
     Person actor;
+
     @EndNode
     Movie movie;
 
@@ -28,5 +30,9 @@ public class Role extends AbstractEntity {
 
     public String getRole() {
         return role;
+    }
+
+    public void setRole(String value) {
+        this.role = value;
     }
 }

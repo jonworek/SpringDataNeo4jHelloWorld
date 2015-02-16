@@ -2,8 +2,10 @@ package com.jonathanworek.helloworld.neo4j.controllers;
 
 import com.jonathanworek.helloworld.neo4j.dao.MovieRepository;
 import com.jonathanworek.helloworld.neo4j.dao.PersonRepository;
+import com.jonathanworek.helloworld.neo4j.dao.RoleRepository;
 import com.jonathanworek.helloworld.neo4j.entities.Movie;
 import com.jonathanworek.helloworld.neo4j.entities.Person;
+import com.jonathanworek.helloworld.neo4j.entities.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +28,9 @@ public class MoviesController {
 
     @Autowired
     PersonRepository personRepo;
+
+    @Autowired
+    RoleRepository roleRepo;
 
     @RequestMapping(value = "/movies", method = GET)
     public Iterable<Movie> allMovies(
@@ -57,9 +62,9 @@ public class MoviesController {
     }
 
     @RequestMapping(value = "/movies/{id}/actors", method = POST)
-    public Person addActorToMovie(@PathVariable Long id,
-                                  @RequestParam String actorName,
-                                  @RequestParam String roleName) {
+    public Role addActorToMovie(@PathVariable Long id,
+                                @RequestParam String actorName,
+                                @RequestParam String roleName) {
         Movie movie = movieRepo.findOne(id);
         Person actor = personRepo.findBySchemaPropertyValue("name", actorName);
         if (actor == null) {
@@ -67,7 +72,12 @@ public class MoviesController {
         }
 
         //todo: make this method work so we save the relationship
-        actor.actedIn(movie, roleName);
-        return personRepo.save(actor);
+        Role r = actor.actedIn(movie, roleName);
+
+        roleRepo.save(r);
+        //personRepo.save(actor);
+        //movieRepo.save(movie);
+
+        return r;
     }
 }

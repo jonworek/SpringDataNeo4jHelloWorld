@@ -15,7 +15,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 * Created by jworek on 2/13/15.
 */
 @RestController
-//@RequestMapping("/actors")
 public class ActorsController {
 
     @Autowired

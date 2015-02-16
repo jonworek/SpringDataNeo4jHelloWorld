@@ -32,7 +32,18 @@ public class Person extends AbstractEntity {
         this.name = name;
     }
 
-    public void actedIn(Movie movie, String roleName) {
-        this.roles.add(new Role(this, movie, roleName));
+    public Role actedIn(Movie movie, String roleName) {
+        Role r = new Role(this, movie, roleName);
+        this.roles.add(r);
+
+        return r;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public Set<Role> getRoles() {
+        return this.roles;
     }
 }

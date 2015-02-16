@@ -11,10 +11,4 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public interface MovieRepository extends GraphRepository<Movie> {
 
-    @Query("START movie={0}" +
-            "MATCH m<-[rating:RATED]-user" +
-            "RETURN rating")
-    Iterable<Rating> getRatings(Movie movie);
-
-    //Iterable<Person> findByActorsMoviesActorName(String name);
 }
