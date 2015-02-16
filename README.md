@@ -15,6 +15,12 @@ Operations
     * Route: /movies
     * Method: GET
 
+* Add a movie
+    * Route: /movies
+    * Method: POST
+    * Params:
+        * title
+
 * Get details about a movie
     * Route: /movies/{id}
     * Method: GET
