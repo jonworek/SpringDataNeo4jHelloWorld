@@ -1,6 +1,8 @@
 package com.jonathanworek.helloworld.neo4j.integration;
 
 import com.jonathanworek.helloworld.neo4j.TestConfig;
+import com.jonathanworek.helloworld.neo4j.dao.MovieRepository;
+import com.jonathanworek.helloworld.neo4j.entities.Movie;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +17,7 @@ import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+import static com.jayway.jsonpath.JsonPath.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
@@ -24,6 +27,9 @@ public class RestAPI_IT {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
+
+    @Autowired
+    private MovieRepository movieRepo;  //todo: fix intellij bitching about autowire
 
     @Before
     public void setup() throws Exception {
@@ -40,6 +46,16 @@ public class RestAPI_IT {
     public void getAllMovies_EmptyDatabase() throws Exception {
         mockMvc.perform(get("/movies")).
                 andExpect(status().isOk());
+    }
+
+    @Test
+    public void getAllMovies_OneMovie() throws Exception {
+        Movie movie = new Movie("Billy Madison");
+        movieRepo.save(movie);
+
+        mockMvc.perform(get("/movies")).
+                andExpect(status().isOk()).
+                andExpect(jsonPath("$.content[0].title").value("Billy Madison"));
     }
 
     @Test
